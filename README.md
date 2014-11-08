@@ -130,4 +130,4 @@ For AngularJS developers, be careful when sending data with properties prefixed 
 
 #### [`MongoRepository`](https://github.com/aliengoo/mongodb-csharp-stuff/blob/master/mongodb-csharp-stuff/Repositories/MongoRepository.cs)
 
-Simple wrapper around a [`MongoCollection`](https://github.com/mongodb/mongo-csharp-driver/blob/master/src/MongoDB.Driver/MongoCollection.cs), nought sexy here, although is has a collection indexer.
+Simple wrapper around a [`MongoCollection`](https://github.com/mongodb/mongo-csharp-driver/blob/master/src/MongoDB.Driver/MongoCollection.cs).
