@@ -7,6 +7,8 @@
     {
         MongoDatabase Database { get; }
 
+        MongoCollection this[string collectionName] { get; }
+
         MongoCollection GetCollection(string name);
 
         MongoCollection<T> GetCollection<T>(string name);
