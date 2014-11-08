@@ -12,6 +12,14 @@
             Database = database;
         }
 
+        public MongoCollection this[string collectionName]
+        {
+            get
+            {
+                return GetCollection(collectionName);    
+            }
+        }
+
         public MongoCollection GetCollection(string name)
         {
             return Database.GetCollection(name);
