@@ -10,9 +10,7 @@
     {
         public bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext)
         {
-
-            Debug.Write("ObjectIdModelBinder hit");
-            
+   
             if (bindingContext.ModelType != typeof(ObjectId))
             {
                 return false;
