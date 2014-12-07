@@ -5,14 +5,14 @@
 
     public class MongoRepository : IMongoRepository
     {
-        public MongoDatabase Database { get; private set; }
+        public virtual MongoDatabase Database { get; private set; }
 
         public MongoRepository(MongoDatabase database)
         {
             Database = database;
         }
 
-        public MongoCollection this[string collectionName]
+        public virtual MongoCollection this[string collectionName]
         {
             get
             {
@@ -20,22 +20,22 @@
             }
         }
 
-        public MongoCollection GetCollection(string name)
+        public virtual MongoCollection GetCollection(string name)
         {
             return Database.GetCollection(name);
         }
 
-        public MongoCollection<T> GetCollection<T>(string name)
+        public virtual MongoCollection<T> GetCollection<T>(string name)
         {
             return Database.GetCollection<T>(name);
         }
 
-        public long Count(string collectionName, IMongoQuery query)
+        public virtual long Count(string collectionName, IMongoQuery query)
         {
             return Database.GetCollection(collectionName).Count(query);
         }
 
-        public MongoCursor Find(
+        public virtual MongoCursor Find(
             string collectionName,
             IMongoQuery query,
             long? limit,
@@ -70,14 +70,14 @@
             return q;
         }
 
-        public BsonDocument FindOne(string collectionName, IMongoQuery query)
+        public virtual BsonDocument FindOne(string collectionName, IMongoQuery query)
         {
             var c = GetExistingCollection(collectionName);
 
             return c.FindOne(query);
         }
 
-        public MongoCursor FindAll(string collectionName, IMongoFields fields, IMongoSortBy sortBy)
+        public virtual MongoCursor FindAll(string collectionName, IMongoFields fields, IMongoSortBy sortBy)
         {
             var c = GetExistingCollection(collectionName);
 
@@ -96,7 +96,7 @@
             return q;
         }
 
-        public BsonDocument Save(string collectionName, BsonDocument doc)
+        public virtual BsonDocument Save(string collectionName, BsonDocument doc)
         {
             var c = GetExistingCollection(collectionName);
 
@@ -105,28 +105,28 @@
             return doc;
         }
 
-        public BsonDocument FindById(string collectionName, BsonValue id)
+        public virtual BsonDocument FindById(string collectionName, BsonValue id)
         {
             var c = GetExistingCollection(collectionName);
 
             return c.FindOneById(id);
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query)
+        public virtual WriteConcernResult Remove(string collectionName, IMongoQuery query)
         {
             var c = GetExistingCollection(collectionName);
 
             return c.Remove(query);
         }
 
-        private MongoCollection<BsonDocument> GetExistingCollection(string collectionName)
+        protected virtual MongoCollection<BsonDocument> GetExistingCollection(string collectionName)
         {
             if (!Database.CollectionExists(collectionName))
             {
                 throw new MongoException(string.Format("Collection {0} does not exist", collectionName));
             }
 
-            return Database.GetCollection(collectionName);
+            return GetCollection<BsonDocument>(collectionName);
         }
     }
 }

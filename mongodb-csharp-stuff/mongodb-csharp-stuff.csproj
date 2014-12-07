@@ -77,18 +77,27 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Utilities.DataTypes">
+      <HintPath>..\packages\CraigsUtilityLibrary-DataTypes.3.4.0149\lib\net40\Utilities.DataTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Utilities.Encryption">
+      <HintPath>..\packages\CraigsUtilityLibrary-Encryption.3.4.0149\lib\net40\Utilities.Encryption.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\StartUpMcs.cs" />
     <Compile Include="Controllers\MongoController.cs" />
     <Compile Include="Controllers\MongoQueryController.cs" />
     <Compile Include="Helpers\BsonDocumentHelpers.cs" />
+    <Compile Include="Helpers\CryptoDocHelper.cs" />
     <Compile Include="Helpers\MongoDbHelper.cs" />
     <Compile Include="Helpers\PaginationHelper.cs" />
+    <Compile Include="Models\CryptoDoc.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\RemoteMongoQuery.cs" />
     <Compile Include="Pipeline\MongoCollectionRightsMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CryptoMongoRepository.cs" />
     <Compile Include="Repositories\IMongoRepository.cs" />
     <Compile Include="Repositories\MongoRepository.cs" />
     <Compile Include="Controllers\MongoCrudController.cs" />
