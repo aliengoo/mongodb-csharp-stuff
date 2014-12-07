@@ -194,4 +194,4 @@ Calling `CryptoMongoRepository.Save`, you supply the unencrypted `BsonDocument`,
 
 #### Decryption
 
-To decrypt, use `CryptoDoc.Decrypt(rsaKey)`, which results the unencrypted `BsonDocument`.  The `rsaKey` value must include the private key, otherwise a `SecurityException` is thrown.
+To decrypt, use `CryptoDoc.Decrypt(rsaKey)`, which returns the unencrypted `BsonDocument`.  The `rsaKey` value must include the private key, otherwise a `SecurityException` is thrown.
