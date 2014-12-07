@@ -1,15 +1,8 @@
 ﻿namespace Mcs.Helpers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Configuration;
-    using System.Linq;
 
-    using MongoDB.Bson;
-    using MongoDB.Bson.IO;
     using MongoDB.Driver;
-
-    using Newtonsoft.Json.Linq;
 
     public static class MongoDbHelper
     {
