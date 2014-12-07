@@ -131,3 +131,67 @@ For AngularJS developers, be careful when sending data with properties prefixed 
 #### [`MongoRepository`](https://github.com/aliengoo/mongodb-csharp-stuff/blob/master/mongodb-csharp-stuff/Repositories/MongoRepository.cs)
 
 Simple wrapper around a [`MongoCollection`](https://github.com/mongodb/mongo-csharp-driver/blob/master/src/MongoDB.Driver/MongoCollection.cs).
+
+### Cryptography
+
+`CryptoDoc`, `CryptoMongoRepository` and `CryptoDocHelper` provide PPK encryption, using the `RSACryptoServiceProvider`, for data in MongoDB.
+
+`CryptoDoc` stores the encrypted data, with some additional unencrypted properties.
+
+Calling `CryptoMongoRepository.Save`, you supply the unencrypted `BsonDocument`, and an instance of `CryptoDoc`.  The method will encrypt the `BsonDocument`, storing the data in `CryptoDoc.Data`.
+
+#### Encrypting data
+
+	void Main()
+	{
+		string publicKeyXml;
+		string ppkXml;
+		 using (var rsaServer = new RSACryptoServiceProvider(1024))
+		 {
+			publicKeyXml = rsaServer.ToXmlString(false);
+		
+			ppkXml = rsaServer.ToXmlString(true);	
+		 }
+		 
+		 var db = MongoDbHelper.GetDatabaseByConnectionString("mongodb://localhost/test");
+		 
+		 var repository = new MongoRepository(db);
+		  
+		 var clientCrypto = new CryptoMongoRepository(repository, "CryptoDocs", publicKeyXml);
+		 
+		 var bson = new BsonDocument();
+		 bson.Add(new BsonElement("firstName", "Homer"));
+		 bson.Add(new BsonElement("lastName", "Simpson"));
+		 
+		 var cd = new CryptoDoc{
+		 	Metadata = new Dictionary<string, object>{
+				{"Created", DateTime.Now}
+			},
+			Tags = new List<string>{
+				"This", "is", "a", "test"
+			}
+			
+		 };
+		 
+		 clientCrypto.Save(bson, cd);
+	}
+
+#### Encrypted BSON data
+
+	{
+	    "_id" : ObjectId("548458be83567425903669e7"),
+	    "Metadata" : {
+	        "Created" : ISODate("2014-12-07T13:40:14.176Z")
+	    },
+	    "Tags" : [ 
+	        "This", 
+	        "is", 
+	        "a", 
+	        "test"
+	    ],
+	    "Data" : { "$binary" : "BfKoQhwM7AkA0MDmdCsT3Bh/splRU4pCEOEZasrX/pbK8RTJIgSvdzDjan4ozdJ1TvZpcW6RsbQKenFixVnQ2WAdOqvsO5oTzNSAnCKQLWCgr1APXTsyc+QdgunaBr5pvYsQjKsfMKsdcCs0wixmMJ94apHka2HB7yAECOD6OfE=", "$type" : "00" }
+	}
+
+#### Decryption
+
+To decrypt, use `CryptoDoc.Decrypt(rsaKey)`, which results the unencrypted `BsonDocument`.  The `rsaKey` value must include the private key, otherwise a `SecurityException` is thrown.
